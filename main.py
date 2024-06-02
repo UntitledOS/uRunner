@@ -99,16 +99,22 @@ class MainWindow(QWidget):
 
     def toggle_window_socket_check(self):
         user = os.getenv("USER")
-        with open(f"/home/{user}/.config/urunner/toggle-window-socket", "r") as f:
-            if f.read() == "1":
-                self.toggle_window()
-                with open(f"/home/{user}/.config/urunner/toggle-window-socket", "w") as f:
-                    f.write("0")
+        try:
+            with open(f"/home/{user}/.config/urunner/toggle-window-socket", "r") as f:
+                if f.read() == "1":
+                    self.toggle_window()
+                    with open(f"/home/{user}/.config/urunner/toggle-window-socket", "w") as f:
+                        f.write("0")
+        except FileNotFoundError:
+            pass
 
 if __name__ == "__main__":
     user = os.getenv("USER")
-    with open(f"/home/{user}/.config/urunner/toggle-window-socket", "w") as f:
-        f.write("0")
+    try:
+        with open(f"/home/{user}/.config/urunner/toggle-window-socket", "w") as f:
+            f.write("0")
+    except:
+        pass
     app = QApplication(sys.argv)
     main_window = MainWindow()
     main_window.show()
